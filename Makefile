@@ -1,7 +1,7 @@
 all: clean install test
 
 test:
-	@node_modules/.bin/hydro
+	@node_modules/.bin/hydro --harmony
 
 test-ci: test
 
