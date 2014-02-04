@@ -4,9 +4,17 @@ version](https://badge.fury.io/js/hydro-co.png)](http://badge.fury.io/js/hydro-c
 
 # hydro-co
 
-## Synopsis
+co integration for Hydro
 
 ## Usage
+
+```js
+it('works!', function *() {
+  yield sleep(500);
+  yield otherStuff();
+  yield User.create({ name: 'Bob' });
+});
+```
 
 ## Installation
 
