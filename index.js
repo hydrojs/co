@@ -3,8 +3,6 @@
  */
 
 var co = require('co');
-var Test = require('hydro').Test;
-var createTest = Test.create;
 
 /**
  * Return whether `fn` is GeneratorFunction.
@@ -28,6 +26,8 @@ function isGenerator(fn) {
  */
 
 module.exports = function(hydro) {
+  var Test = hydro.constructor.Test;
+  var createTest = Test.create;
   Test.create = function(params) {
     var fn = params[params.length - 1];
     var gen = null;

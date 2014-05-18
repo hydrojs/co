@@ -16,15 +16,14 @@
     "type": "git",
     "url": "https://github.com/hydrojs/hydro-co"
   },
-  "peerDependencies": {
-    "hydro": "0.x",
-    "chai": "1.x"
+  "dependencies": {
+    "co": "~3.0.2"
   },
   "devDependencies": {
-    "hydro": "*",
-    "hydro-simple": "*",
     "hydro-bdd": "~0.2.0",
-    "co": "~3.0.2"
+    "hydro-simple": "*",
+    "chai": "1.x",
+    "hydro": "*"
   },
   "author": "Veselin Todorov <hi@vesln.com>",
   "license": "MIT"
