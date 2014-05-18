@@ -30,18 +30,9 @@ module.exports = function(hydro) {
   var createTest = Test.create;
   Test.create = function(params) {
     var fn = params[params.length - 1];
-    var gen = null;
 
     if (isGenerator(fn)) {
-      params.pop();
-
-      gen = function(done) {
-        co(function *() {
-          yield fn();
-          done();
-        })();
-      };
-      params.push(gen);
+      params[params.length - 1] = co(fn);
     }
 
     return createTest(params);
