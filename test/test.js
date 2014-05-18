@@ -6,8 +6,7 @@ it('handles GeneratorFunctions', function (done) {
 
   hydro.addSuite('test suite', function() {
     hydro.addTest('generator', function *() {
-      var res = yield later();
-      assert.equal(res, 42);
+      assert.equal(yield later(42), 42);
     });
   });
 
@@ -21,21 +20,26 @@ it('catches errors in GeneratorFunctions', function (done) {
   var hydro = Hydro();
 
   hydro.addSuite('test suite', function() {
-    hydro.addTest('generator', function *() {
-      yield invalidFunction();
+    hydro.addTest('sync', function *() {
+      throw new Error('boom');
+    });
+    hydro.addTest('async', function *() {
+      yield later(new Error('boom'));
     });
   });
 
   hydro.run(function() {
     assert.equal(hydro.tests()[0].status, 'failed');
+    assert.equal(hydro.tests()[1].status, 'failed');
     done();
   });
 });
 
-function later() {
+function later(val) {
   return function (fn) {
     setTimeout(function() {
-      fn(null, 42);
+      if (val instanceof Error) fn(val);
+      else fn(null, val);
     }, 42);
   };
 }
