@@ -47,22 +47,13 @@ function sync(fn) {
 /**
  * Add support for GeneratorFunctions.
  *
- * TODO: monkey patching Test.create is silly. We should expose
- * a public api for this.
- *
  * @param {Object} hydro
  * @api public
  */
 
 module.exports = function(hydro) {
-  var Test = hydro.constructor.Test;
-  var createTest = Test.create;
-  Test.create = function(params) {
-    params[params.length - 1] = sync(params[params.length - 1]);
-    return createTest(params);
-  };
-
   [
+    'addTest',
     'beforeNext',
     'afterNext',
     'beforeAll',
@@ -71,8 +62,9 @@ module.exports = function(hydro) {
     'after'
   ].forEach(function(method){
     var original = hydro.interface[method];
-    hydro.interface[method] = function(fn) {
-      original.call(hydro.interface, sync(fn));
+    hydro.interface[method] = function() {
+      arguments[arguments.length - 1] = sync(arguments[arguments.length - 1]);
+      original.apply(hydro.interface, arguments);
     };
   });
 };

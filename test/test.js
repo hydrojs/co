@@ -9,10 +9,8 @@ before(function(){
 })
 
 it('handles GeneratorFunctions', function (done) {
-  hydro.addSuite('test suite', function() {
-    hydro.addTest('generator', function *() {
-      assert.equal(yield later(42), 42);
-    });
+  hydro.interface.addTest('generator', function *() {
+    assert.equal(yield later(42), 42);
   });
 
   hydro.run(function() {
@@ -22,11 +20,11 @@ it('handles GeneratorFunctions', function (done) {
 });
 
 it('catches errors in GeneratorFunctions', function (done) {
-  hydro.addSuite('test suite', function() {
-    hydro.addTest('sync', function *() {
+  hydro.interface.addSuite('test suite', function() {
+    hydro.interface.addTest('sync', function *() {
       throw new Error('boom');
     });
-    hydro.addTest('async', function *() {
+    hydro.interface.addTest('async', function *() {
       yield later(new Error('boom'));
     });
   });
