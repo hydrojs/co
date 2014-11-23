@@ -1,9 +1,14 @@
 var assert = require('assert');
 var Hydro = require('hydro');
+var plugin = require('..');
+
+var hydro
+before(function(){
+  hydro = new Hydro
+  plugin(hydro)
+})
 
 it('handles GeneratorFunctions', function (done) {
-  var hydro = Hydro();
-
   hydro.addSuite('test suite', function() {
     hydro.addTest('generator', function *() {
       assert.equal(yield later(42), 42);
@@ -17,8 +22,6 @@ it('handles GeneratorFunctions', function (done) {
 });
 
 it('catches errors in GeneratorFunctions', function (done) {
-  var hydro = Hydro();
-
   hydro.addSuite('test suite', function() {
     hydro.addTest('sync', function *() {
       throw new Error('boom');
@@ -31,6 +34,19 @@ it('catches errors in GeneratorFunctions', function (done) {
   hydro.run(function() {
     assert.equal(hydro.tests()[0].status, 'failed');
     assert.equal(hydro.tests()[1].status, 'failed');
+    done();
+  });
+});
+
+it('handles hooks', function (done) {
+  hydro.interface.before(function *() {
+    yield later(new Error('boom'));
+  });
+
+  hydro.interface.addTest('empty', function() {});
+
+  hydro.run(function(e) {
+    assert(e && e.message == 'boom');
     done();
   });
 });
