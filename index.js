@@ -22,7 +22,7 @@ function isGenerator(fn) {
  * @api private
  */
 
-function isPromise(obj){
+function isPromise(obj) {
   return obj && typeof obj.then === 'function';
 }
 
@@ -64,7 +64,7 @@ module.exports = function(hydro) {
     var original = hydro.interface[method];
     hydro.interface[method] = function() {
       arguments[arguments.length - 1] = sync(arguments[arguments.length - 1]);
-      original.apply(hydro.interface, arguments);
+      return original.apply(hydro.interface, arguments);
     };
   });
 };

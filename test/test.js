@@ -2,11 +2,15 @@ var assert = require('assert');
 var Hydro = require('hydro');
 var plugin = require('..');
 
-var hydro
+var hydro;
 before(function(){
-  hydro = new Hydro
-  plugin(hydro)
-})
+  hydro = new Hydro;
+  plugin(hydro);
+});
+
+it('should return the test', function(){
+  assert(hydro.interface.addTest('test', function(){}));
+});
 
 it('handles GeneratorFunctions', function (done) {
   hydro.interface.addTest('generator', function *() {
