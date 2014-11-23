@@ -16,6 +16,17 @@ function isGenerator(fn) {
 }
 
 /**
+ * Return whether `obj` is a Promise.
+
+ * @return {Boolean}
+ * @api private
+ */
+
+function isPromise(obj){
+  return obj && typeof obj.then === 'function';
+}
+
+/**
  * Add support for GeneratorFunctions.
  *
  * TODO: monkey patching Test.create is silly. We should expose
@@ -31,9 +42,14 @@ module.exports = function(hydro) {
   Test.create = function(params) {
     var fn = params[params.length - 1];
 
-    if (isGenerator(fn)) {
-      params[params.length - 1] = co(fn);
-    }
+    params[params.length - 1] = function(done){
+      var res = isGenerator(fn) ? co(fn) : fn(done);
+      if (isPromise(res)) {
+        res.then(function(){ done(); }, done);
+      } else {
+        fn.length || done();
+      }
+    };
 
     return createTest(params);
   };

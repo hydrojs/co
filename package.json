@@ -17,7 +17,7 @@
     "url": "https://github.com/hydrojs/hydro-co"
   },
   "dependencies": {
-    "co": "~3.0.2"
+    "co": "4"
   },
   "devDependencies": {
     "hydro-bdd": "~0.2.0",
